@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Day Countdown</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #f4f4f4;
+      margin: 0;
+    }
+    h1 {
+      font-size: 2.5rem;
+      color: #333;
+    }
+    #counter {
+      font-size: 4rem;
+      color: #008000;
+      margin-top: 20px;
+    }
+    p {
+      font-size: 1.2rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎓 School Days Remaining</h1>
+  <div id="counter">Loading...</div>
+  <p>Excludes weekends and these days off: May 26 (Memorial Day).</p>
+
+  <script>
+    const endDate = new Date("2025-06-04T23:59:59");
+    const skipDates = [
+      "2025-05-26"
+    ];
+
+    function isWeekend(date) {
+      return date.getDay() === 0 || date.getDay() === 6;
+    }
+
+    function isSkipDate(date) {
+      const iso = date.toISOString().split('T')[0];
+      return skipDates.includes(iso);
+    }
+
+    function countSchoolDays(start, end) {
+      let count = 0;
+      const cur = new Date(start);
+
+      while (cur <= end) {
+        if (!isWeekend(cur) && !isSkipDate(cur)) {
+          count++;
+        }
+        cur.setDate(cur.getDate() + 1);
+      }
+      return count;
+    }
+
+    function updateCounter() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const remaining = countSchoolDays(today, endDate);
+      document.getElementById("counter").textContent = remaining;
+    }
+
+    updateCounter();
+  </script>
+</body>
+</html>
