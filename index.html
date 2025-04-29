@@ -33,41 +33,33 @@
 <body>
   <h1>🎓 School Days Remaining</h1>
   <div id="counter">Loading...</div>
-  <p>Excludes weekends and these days off: May 26 (Memorial Day).</p>
+  <p>Counts only specific school days through June 4, 2025.</p>
 
   <script>
-    const endDate = new Date("2025-06-04T23:59:59");
-    const skipDates = [
-      "2025-05-26"
+    const validSchoolDays = [
+      "2025-04-29", "2025-04-30", "2025-05-01", "2025-05-02",
+      "2025-05-05", "2025-05-06", "2025-05-07", "2025-05-08", "2025-05-09",
+      "2025-05-12", "2025-05-13", "2025-05-14", "2025-05-15", "2025-05-16",
+      "2025-05-19", "2025-05-20", "2025-05-21", "2025-05-22", "2025-05-23",
+      "2025-05-27", "2025-05-28", "2025-05-29", "2025-05-30",
+      "2025-06-02", "2025-06-03", "2025-06-04"
     ];
 
-    function isWeekend(date) {
-      return date.getDay() === 0 || date.getDay() === 6;
-    }
+    function countRemainingDays() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
 
-    function isSkipDate(date) {
-      const iso = date.toISOString().split('T')[0];
-      return skipDates.includes(iso);
-    }
+      const remaining = validSchoolDays.filter(dateStr => {
+        const date = new Date(dateStr);
+        return date >= today;
+      });
 
-    function countSchoolDays(start, end) {
-      let count = 0;
-      const cur = new Date(start);
-
-      while (cur <= end) {
-        if (!isWeekend(cur) && !isSkipDate(cur)) {
-          count++;
-        }
-        cur.setDate(cur.getDate() + 1);
-      }
-      return count;
+      return remaining.length;
     }
 
     function updateCounter() {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const remaining = countSchoolDays(today, endDate);
-      document.getElementById("counter").textContent = remaining;
+      const remaining = countRemainingDays();
+      document.getElementById("counter").textContent = remaining > 0 ? remaining : "🎉 Done!";
     }
 
     updateCounter();
