@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Day Countdown</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #f4f4f4;
+      margin: 0;
+    }
+    h1 {
+      font-size: 2.5rem;
+      color: #333;
+    }
+    #counter {
+      font-size: 4rem;
+      color: #008000;
+      margin-top: 20px;
+    }
+    p {
+      font-size: 1.2rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎓 School Days Remaining</h1>
+  <div id="counter">Loading...</div>
+  <p>Counts only specific school days through June 4, 2025.</p>
+
+  <script>
+    const validSchoolDays = [
+      "2025-04-29", "2025-04-30", "2025-05-01", "2025-05-02",
+      "2025-05-05", "2025-05-06", "2025-05-07", "2025-05-08", "2025-05-09",
+      "2025-05-12", "2025-05-13", "2025-05-14", "2025-05-15", "2025-05-16",
+      "2025-05-19", "2025-05-20", "2025-05-21", "2025-05-22", "2025-05-23",
+      "2025-05-27", "2025-05-28", "2025-05-29", "2025-05-30",
+      "2025-06-02", "2025-06-03", "2025-06-04"
+    ];
+
+    function countRemainingDays() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const remaining = validSchoolDays.filter(dateStr => {
+        const date = new Date(dateStr);
+        return date >= today;
+      });
+
+      return remaining.length;
+    }
+
+    function updateCounter() {
+      const remaining = countRemainingDays();
+      document.getElementById("counter").textContent = remaining > 0 ? remaining : "🎉 Done!";
+    }
+
+    updateCounter();
+  </script>
+</body>
+</html>
